@@ -2,10 +2,36 @@ const Project = require('../models/projectModel');
 
 const createProject = async (req, res) => {
   try {
-    const { title, url, category } = req.body;
-    const project = await Project.create({ title, url, category, userId: req.userId });
+    const {
+      title,
+      url,
+      category,
+      email,
+      metaTitle,
+      metaDescription,
+      keywords,
+      targetKeywords,
+      sitemapUrl,
+      robotsTxtUrl
+    } = req.body;
+
+    const project = await Project.create({
+      userId: req.userId,
+      title,
+      url,
+      category,
+      email,
+      metaTitle,
+      metaDescription,
+      keywords,           // must be an array from frontend
+      targetKeywords,     // must be an array from frontend
+      sitemapUrl,
+      robotsTxtUrl
+    });
+
     res.status(201).json(project);
   } catch (err) {
+    console.error(err);
     res.status(400).json({ error: 'Project creation failed' });
   }
 };

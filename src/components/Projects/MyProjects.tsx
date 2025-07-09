@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, Filter, Globe, MoreVertical, Eye, Edit3, Trash2 } from 'lucide-react';
+import {
+  Plus, Search, Filter, Globe, MoreVertical, Eye, Edit3, Trash2
+} from 'lucide-react';
+
 import { getProjects, deleteProject as apiDeleteProject } from '../../lib/api';
 import CreateProjectModal from './CreateProjectModal';
+import ProjectDetails from '../Reports/ProjectDetails';
 
 type Project = {
   _id: string;
@@ -9,6 +13,25 @@ type Project = {
   url: string;
   category?: string;
   status?: string;
+  email?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  targetKeywords?: string[];
+  sitemapUrl?: string;
+  robotsTxtUrl?: string;
+  metaTagReport?: object;
+  keywordDensityReport?: object;
+  backlinkReport?: object;
+  brokenLinksReport?: object;
+  sitemapReport?: object;
+  robotsReport?: object;
+  keywordTrackerReport?: object;
+  submissions?: {
+    siteName: string;
+    submissionType: string;
+    submittedAt: string;
+  }[];
 };
 
 const MyProjects = () => {
@@ -16,6 +39,7 @@ const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const fetchProjects = async () => {
     try {
@@ -124,7 +148,10 @@ const MyProjects = () => {
                     <MoreVertical className="w-4 h-4 text-gray-400" />
                   </button>
                   <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg w-32 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-                    <button className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2"
+                    >
                       <Eye className="w-3 h-3" />
                       <span>View</span>
                     </button>
@@ -148,12 +175,24 @@ const MyProjects = () => {
         ))}
       </div>
 
-      {/* Modal */}
+      {/* Modal - Create Project */}
       {showCreateModal && (
         <CreateProjectModal
           onClose={() => setShowCreateModal(false)}
           onCreated={fetchProjects}
         />
+      )}
+
+      {/* Modal - View Project Details */}
+      {selectedProject && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-screen shadow-lg">
+            <ProjectDetails project={selectedProject} />
+            <div className="pt-4 text-right">
+              <button onClick={() => setSelectedProject(null)} className="px-4 py-2 bg-gray-200 rounded">Close</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

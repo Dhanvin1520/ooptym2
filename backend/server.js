@@ -50,7 +50,7 @@ const startServer = async () => {
 
   // ✅ Proper CORS config for Vite (frontend: 5173)
   const corsOptions = {
-    origin: 'http://localhost:5179',
+    origin: 'http://localhost:5177',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -67,11 +67,17 @@ const startServer = async () => {
   const authRoutes = require('./routes/authroutes');
   const projectRoutes = require('./routes/projectRoutes');
   const seoRoutes = require('./routes/seoRoutes');
+  const automationRoutes = require('./routes/automationRoutes');
+  app.use('/api/automation', automationRoutes);
+  const toolRoutes = require('./routes/toolRoutes');
+app.use('/api/tools', toolRoutes);
 
   app.use('/api/auth', authRoutes);
   app.use('/api/projects', projectRoutes);
   app.use('/api/tools', seoRoutes);
-
+  const submissionRoutes = require('./routes/submissionRoutes');
+  app.use('/api/submissions', submissionRoutes);
+  
   app.get('/', (req, res) => res.send(`🚀 API running on port ${PORT}`));
 
   app.listen(PORT, () => {
