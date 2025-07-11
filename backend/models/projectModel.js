@@ -45,7 +45,8 @@ const projectSchema = new mongoose.Schema({
   brokenLinksReport: { type: Object },       // List of dead URLs found
   sitemapReport: { type: Object },           // Pages, status codes
   robotsReport: { type: Object },            // Crawl rules
-  keywordTrackerReport: { type: Object },    // Keyword positions or rankings
+  keywordTrackerReport: { type: Object },
+  pageSpeedReport: { type: Object },    // Keyword positions or rankings
 
   // 📍 Submission Logs
   submissions: [submissionSchema]

@@ -30,7 +30,7 @@ export const useAuthProvider = (): AuthContextType => {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
-    const res = await axios.post('http://localhost:5005/api/auth/login', { email, password });
+    const res = await axios.post('http://localhost:5003/api/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
     setUser(decodeUser(res.data.token));
     setIsLoading(false);
@@ -38,7 +38,7 @@ export const useAuthProvider = (): AuthContextType => {
 
   const register = async (username: string, email: string, password: string) => {
     setIsLoading(true);
-    await axios.post('http://localhost:5005/api/auth/signup', { username, email, password });
+    await axios.post('http://localhost:5003/api/auth/signup', { username, email, password });
     await login(email, password); // auto login after signup
     setIsLoading(false);
   };

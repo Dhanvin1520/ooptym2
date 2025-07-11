@@ -50,7 +50,7 @@ function App() {
     const fetchProjects = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5005/api/projects', {
+        const res = await axios.get('http://localhost:5003/api/projects', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -3,7 +3,12 @@ import {
   Plus, Search, Filter, Globe, MoreVertical, Eye, Edit3, Trash2
 } from 'lucide-react';
 
-import { getProjects, deleteProject as apiDeleteProject } from '../../lib/api';
+import {
+  getProjects,
+  deleteProject as apiDeleteProject,
+  getProjectById
+} from '../../lib/api';
+
 import CreateProjectModal from './CreateProjectModal';
 import ProjectDetails from '../Reports/ProjectDetails';
 
@@ -27,6 +32,10 @@ type Project = {
   sitemapReport?: object;
   robotsReport?: object;
   keywordTrackerReport?: object;
+  pageSpeedReport?: object;
+  schemaReport?: object;
+  altTextReport?: object;
+  canonicalReport?: object;
   submissions?: {
     siteName: string;
     submissionType: string;
@@ -80,6 +89,7 @@ const MyProjects = () => {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">My Projects</h2>
@@ -149,7 +159,14 @@ const MyProjects = () => {
                   </button>
                   <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg w-32 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                     <button
-                      onClick={() => setSelectedProject(project)}
+                      onClick={async () => {
+                        try {
+                          const res = await getProjectById(project._id);
+                          setSelectedProject(res.data);
+                        } catch (err) {
+                          console.error('❌ Failed to load project details:', err);
+                        }
+                      }}
                       className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2"
                     >
                       <Eye className="w-3 h-3" />
@@ -189,7 +206,12 @@ const MyProjects = () => {
           <div className="bg-white rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-screen shadow-lg">
             <ProjectDetails project={selectedProject} />
             <div className="pt-4 text-right">
-              <button onClick={() => setSelectedProject(null)} className="px-4 py-2 bg-gray-200 rounded">Close</button>
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="px-4 py-2 bg-gray-200 rounded"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

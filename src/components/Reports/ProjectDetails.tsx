@@ -25,6 +25,10 @@ type Project = {
   sitemapReport?: object;
   robotsReport?: object;
   keywordTrackerReport?: object;
+  pageSpeedReport?: object;
+  schemaReport?: object;
+  altTextReport?: object;
+  canonicalReport?: object;
 
   submissions?: Submission[];
 };
@@ -53,47 +57,39 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
 
       <div className="border-t pt-4 space-y-4">
         <h3 className="text-xl font-semibold text-gray-700">📊 Tool Reports</h3>
+
         {project.metaTagReport && (
-          <div>
-            <strong>Meta Tag Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.metaTagReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Meta Tag Report" report={project.metaTagReport} />
         )}
         {project.keywordDensityReport && (
-          <div>
-            <strong>Keyword Density Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.keywordDensityReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Keyword Density Report" report={project.keywordDensityReport} />
         )}
         {project.backlinkReport && (
-          <div>
-            <strong>Backlink Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.backlinkReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Backlink Report" report={project.backlinkReport} />
         )}
         {project.brokenLinksReport && (
-          <div>
-            <strong>Broken Links Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.brokenLinksReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Broken Links Report" report={project.brokenLinksReport} />
         )}
         {project.sitemapReport && (
-          <div>
-            <strong>Sitemap Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.sitemapReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Sitemap Report" report={project.sitemapReport} />
         )}
         {project.robotsReport && (
-          <div>
-            <strong>Robots.txt Report:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.robotsReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Robots.txt Report" report={project.robotsReport} />
         )}
         {project.keywordTrackerReport && (
-          <div>
-            <strong>Keyword Tracker:</strong>
-            <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(project.keywordTrackerReport, null, 2)}</pre>
-          </div>
+          <ReportBlock title="Keyword Tracker Report" report={project.keywordTrackerReport} />
+        )}
+        {project.pageSpeedReport && (
+          <ReportBlock title="Page Speed Report" report={project.pageSpeedReport} />
+        )}
+        {project.schemaReport && (
+          <ReportBlock title="Schema Markup Report" report={project.schemaReport} />
+        )}
+        {project.altTextReport && (
+          <ReportBlock title="Image Alt Text Report" report={project.altTextReport} />
+        )}
+        {project.canonicalReport && (
+          <ReportBlock title="Canonical Tag Report" report={project.canonicalReport} />
         )}
       </div>
 
@@ -114,5 +110,12 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
     </div>
   );
 };
+
+const ReportBlock = ({ title, report }: { title: string; report: object }) => (
+  <div>
+    <strong>{title}:</strong>
+    <pre className="bg-gray-100 p-2 rounded text-sm">{JSON.stringify(report, null, 2)}</pre>
+  </div>
+);
 
 export default ProjectDetails;
